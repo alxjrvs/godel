@@ -1,2 +1,2 @@
-model Godel
+module Godel
 end

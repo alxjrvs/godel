@@ -1,5 +1,5 @@
-require "godel/version"
+#require "godel/version"
+require "godel/incompleteness"
 
 module Godel
-  # Your code goes here...
 end
