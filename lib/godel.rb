@@ -7,6 +7,7 @@ module Godel
     klass.extend ClassMethods
     klass.cattr_accessor :_incomplete_methods, :_incomplete_attrs
     klass.after_save :clear_godel_cache
+    klass.after_create :clear_godel_cache
     klass._incomplete_methods ||= []
     klass._incomplete_attrs ||= []
   end
@@ -18,23 +19,24 @@ module Godel
   def incomplete?
     @_incomplete ||= begin
       return false if _incomplete_attrs.empty? && _incomplete_methods.empty?
-        _filter_incomplete_attributes
-        _filter_incomplete_methods
         warnings.any?
     end
   end
 
+  attr_accessor :warnings
+
+  def warnings
+    @_warnings ||= Warnings.new
+  end
+
   private
 
-  attr_accessor :warnings
 
   def clear_godel_cache
     @_incomplete = nil
     warnings.clear!
-  end
-
-  def warnings
-    @_warnings ||= Warnings.new
+    _filter_incomplete_attributes
+    _filter_incomplete_methods
   end
 
   def _filter_incomplete_attributes

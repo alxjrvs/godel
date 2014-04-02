@@ -1,6 +1,9 @@
 # Godel
+##Validations, Except they don't do anything.
 
-TODO: Write a gem description
+In Rails apps, it is possible that a model might want another state above 'valid' or 'invalid'. Unreliable inputs may put you in a situation where you can not guarantee the integrity of every entry in your database, but strict validations might cause you to lose fuzzy data.
+
+This gem gives another 'state' about validity, "completeness". A model can require certain attributes or methods to be present in order to be 'complete', giving you another powerful tool when solidfying the integrity of your data.
 
 ## Installation
 
@@ -18,9 +21,75 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+include Godel in any model you'd like to measure completeness in.
 
-## Contributing
+    include Godel
+
+You can define attributes required for completeness with the 'completes' command. you can also use
+"incomplete_without".
+
+    completes :foo, :bar, :baz
+
+You can also define methods required for completeness. In these methods, create a warning (analagous to 'errors' in validations) should it be incomplete.
+
+    completes_method :must_have_name_or_email
+
+    ...
+
+    private
+
+    def must_have_name_or_email
+      if name.blank? && email.blank?
+        warnings.add(:name_or_email, "Needs either Name or Email")
+      end
+
+    end
+
+
+You can query the completeness of a method with the #complete? or #incomplete? method, and you can see the relevant warnings with the #warnings method. 
+
+
+    class ReadmeClass
+      completes :foo
+      completes_method :must_have_bar_over_five
+
+      private
+
+      def must_have_bar_over_five
+        if bar < 5
+          warnings.add(:bar_over_five, "Bar must be > 5")
+        end
+      end
+    end
+
+    readme = ReadmeClass.create
+    readme.incomplete?
+      # => true
+    readme.warnings
+      # => #<Godel::Warnings::0x007efc7f7b11a0 @messages={:foo => "ReademeClass is incomplete without foo", :bar_over_five => "Bar must be > 5"}
+
+    readme.update_attributes(foo: "Foo")
+
+    readme.incomplete?
+      # => true
+    readme.warnings
+      # => #<Godel::Warnings::0x007efc7f7b11a0 @messages={:bar_over_five => "Bar must be > 5"}
+
+    readme.update_attributes(bar: 6)
+j
+    readme.incomplete?
+      # => false
+    readme.warnings
+      # => #<Godel::Warnings::0x007efc7f7b11a0 @messages={}
+
+    readme.complete?
+      #=> true
+
+## Development Goals
+  - api matching rails validation syntax
+  - decouple from rails (allow completeness on PORO's)
+
+## Contributing 
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
