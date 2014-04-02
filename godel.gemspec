@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["alxjrvs@gmail.com"]
   spec.description   = %q{Validations, except they don't do anything.}
   spec.summary       = %q{In Rails apps, it is possible that a model might want another state above 'valid' or 'invalid'. Unreliable inputs may put you in a situation where you can not guarantee the  integrity of every entry in your database, but strict validations might cause you to lose fuzzy data. This gem gives another 'state' about validity, "completeness". A model can require certain attributes or methods to be present in order to be 'complete', giving you another powerful tool when solidfying the integrity of your data. }
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/alxjrvs/godel"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

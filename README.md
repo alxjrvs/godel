@@ -76,7 +76,7 @@ You can query the completeness of a method with the #complete? or #incomplete? m
       # => #<Godel::Warnings::0x007efc7f7b11a0 @messages={:bar_over_five => "Bar must be > 5"}
 
     readme.update_attributes(bar: 6)
-j
+
     readme.incomplete?
       # => false
     readme.warnings
@@ -86,6 +86,7 @@ j
       #=> true
 
 ## Development Goals
+
   - api matching rails validation syntax
   - decouple from rails (allow completeness on PORO's)
 
@@ -96,3 +97,10 @@ j
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## License
+[MIT](http://opensource.org/licenses/MIT)
+
+## Special Thanks
+Special thanks to [Terrible Labs](http://www.terriblelabs.com) and [The District Management Council](http://www.dmcouncil.org/), for providing solutions and problems, respectively.
+
