@@ -25,8 +25,8 @@ end
 class TestClass < ActiveRecord::Base
   include Godel
 
-  complete_with :foo, :baz
-  complete_if :either_pug_or_stuff
+  completes :foo, :baz
+  completes_method :either_pug_or_stuff
 
   private
 
